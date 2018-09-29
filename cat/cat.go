@@ -6,30 +6,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/DubrulleKevin/gosix/common"
 )
-
-func panicIfError(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func stringSliceContains(s []string, e string) bool {
-	for _, el := range s {
-		if el == e {
-			return true
-		}
-	}
-
-	return false
-}
 
 func main() {
 	flag.Bool("u", false, "Not implemented")
 
 	flag.Parse()
 
-	if len(flag.Args()) == 0 || stringSliceContains(flag.Args(), "-") {
+	if len(flag.Args()) == 0 || common.StringSliceContains(flag.Args(), "-") {
 		scanner := bufio.NewScanner(os.Stdin)
 		for scanner.Scan() {
 			fmt.Println(scanner.Text())
@@ -37,10 +23,10 @@ func main() {
 	} else {
 		for _, fileName := range flag.Args() {
 			fileInfo, err := os.Stat(fileName)
-			panicIfError(err)
+			common.PanicIfError(err)
 			if !fileInfo.IsDir() {
 				fileContent, err := ioutil.ReadFile(fileName)
-				panicIfError(err)
+				common.PanicIfError(err)
 				fmt.Print(string(fileContent))
 			}
 		}
