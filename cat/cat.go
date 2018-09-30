@@ -9,14 +9,18 @@ import (
 	"github.com/DubrulleKevin/gosix/common"
 )
 
-func readFromStdin() {
-	scanner := bufio.NewScanner(os.Stdin)
+func printLines(file *os.File) {
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
 }
 
-func readFromFile(fileName string) {
+func printStdin() {
+	printLines(os.Stdin)
+}
+
+func printFile(fileName string) {
 	fileInfo, err := os.Stat(fileName)
 	common.PanicIfError(err)
 	if !fileInfo.IsDir() {
@@ -24,10 +28,7 @@ func readFromFile(fileName string) {
 		common.PanicIfError(err)
 		defer file.Close()
 
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			fmt.Println(scanner.Text())
-		}
+		printLines(file)
 	}
 }
 
@@ -37,13 +38,13 @@ func main() {
 	args := flag.Args()
 
 	if len(args) == 0 {
-		readFromStdin()
+		printStdin()
 	} else {
 		for _, fileName := range args {
 			if fileName == "-" {
-				readFromStdin()
+				printStdin()
 			} else {
-				readFromFile(fileName)
+				printFile(fileName)
 			}
 		}
 	}

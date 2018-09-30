@@ -7,7 +7,7 @@ func PanicIfError(e error) {
 	}
 }
 
-// StringSliceContains returns true if string "s" is found in strings' slice "ss", and false otherwise.
+/*// StringSliceContains returns true if string "s" is found in strings' slice "ss", and false otherwise.
 func StringSliceContains(ss []string, s string) bool {
 	for _, el := range ss {
 		if el == s {
@@ -17,3 +17,4 @@ func StringSliceContains(ss []string, s string) bool {
 
 	return false
 }
+*/
