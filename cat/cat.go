@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/DubrulleKevin/gosix/common"
@@ -21,9 +20,14 @@ func readFromFile(fileName string) {
 	fileInfo, err := os.Stat(fileName)
 	common.PanicIfError(err)
 	if !fileInfo.IsDir() {
-		fileContent, err := ioutil.ReadFile(fileName)
+		file, err := os.Open(fileName)
 		common.PanicIfError(err)
-		fmt.Print(string(fileContent))
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
 	}
 }
 
